@@ -36,3 +36,42 @@ function count(e) {
         startRound(); 
     }
 }
+
+let time_count=30;
+let timer=document.querySelector('.timer_count');
+timer.textContent=time_count;
+
+let id=setInterval(timer_logic,1000);
+
+function stop_show()
+{
+    
+    document.querySelector('.timer').style.display='none';
+    document.querySelector('main').style.display='none';
+    let result=document.querySelector('.result_score');
+    result.style.display='block';
+    result.textContent=value;
+
+    let playbtn=document.querySelector('.play');
+    playbtn.style.display='block';
+    playbtn.textContent='Play Again';
+   
+    
+}
+
+
+function timer_logic()
+{
+    
+    time_count--;
+    timer.textContent=time_count;
+    if(time_count===0)
+    {
+        clearInterval(id);
+        stop_show();
+    }
+  
+
+}
+let playbtn=document.querySelector('.play');
+playbtn.addEventListener('click',);
