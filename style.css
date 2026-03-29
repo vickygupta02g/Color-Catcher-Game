@@ -57,6 +57,7 @@ main{
     align-items: center;
     gap: 200px;
     margin-top: 0;
+    
 }
 section{
     display: flex;
@@ -85,7 +86,10 @@ h1{
     display:flex;
     justify-content: flex-end;
     align-items: center;
+    gap: 20px;
 }
+
+
 .timer_count{
     width: 80px;
     border: 1px solid black;
@@ -95,6 +99,7 @@ h1{
     color: red;
     font-weight: bolder;
     font-size: larger;
+    box-shadow: 10px 5px 5px rgba(0, 0, 0, 0.756);
 }
 .score-btn{
     width: 100px;

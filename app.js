@@ -39,7 +39,9 @@ function count(e) {
 
 let time_count=30;
 let timer=document.querySelector('.timer_count');
-timer.textContent=time_count;
+timer.textContent=`${time_count} sec`;
+
+
 
 let id=setInterval(timer_logic,1000);
 
@@ -64,7 +66,7 @@ function timer_logic()
 {
     
     time_count--;
-    timer.textContent=time_count;
+   timer.textContent=`${time_count} sec`;
     if(time_count===0)
     {
         clearInterval(id);
@@ -74,4 +76,6 @@ function timer_logic()
 
 }
 let playbtn=document.querySelector('.play');
-playbtn.addEventListener('click',);
+playbtn.addEventListener('click',() => {
+    location.reload();
+});
