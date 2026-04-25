@@ -1,81 +1,114 @@
-let tar = document.querySelector('.item-target');
-let value = 0;
-let score = document.querySelector('.score-btn');
-score.textContent = `${value}`;
 
-let color = document.querySelectorAll('.item');
+let state = {
+    score: 0,
+    time: 30,
+    isRunning: true,
+    targetColor: ""
+};
 
-for (let i = 0; i < color.length; i++) {
-    color[i].setAttribute('data-index', `${i + 1}`);
+
+const tar = document.querySelector('.item-target');
+const score = document.querySelector('.score-btn');
+const timer = document.querySelector('.timer_count');
+const buttons = document.querySelectorAll('.item');
+const container = document.querySelector('.container');
+const resultScore = document.querySelector('.result_score');
+const playBtn = document.querySelector('.play');
+
+
+score.textContent = state.score;
+timer.textContent = `${state.time} sec`;
+
+
+function generateColor() {
+    return `rgb(${Math.floor(Math.random()*256)}, ${Math.floor(Math.random()*256)}, ${Math.floor(Math.random()*256)})`;
 }
+
 
 function startRound() {
-    color.forEach(color_generator);
+    buttons.forEach(btn => {
+        const color = generateColor();
+        btn.style.backgroundColor = color;
+    });
 
-    let randomIndexofbutton = Math.floor(Math.random() * color.length);
-    let choosebtn = color[randomIndexofbutton];
-    tar.style.backgroundColor = choosebtn.style.backgroundColor;
+    const randomIndex = Math.floor(Math.random() * buttons.length);
+    state.targetColor = buttons[randomIndex].style.backgroundColor;
+
+    tar.style.backgroundColor = state.targetColor;
 }
 
-function color_generator(e) {
-    e.style.backgroundColor = `rgb(${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)})`;
+
+container.addEventListener('click', (e) => {
+    if (!state.isRunning) return;
+
+    if (e.target.tagName === 'BUTTON') {
+        const clickedColor = e.target.style.backgroundColor;
+
+        if (clickedColor === state.targetColor) {
+            state.score += 10;
+            score.textContent = state.score;
+        }
+
+        startRound();
+    }
+});
+
+
+let intervalId = setInterval(() => {
+    if (!state.isRunning) return;
+
+    state.time--;
+    timer.textContent = `${state.time} sec`;
+
+    if (state.time === 0) {
+        endGame();
+    }
+}, 1000);
+
+function endGame() {
+    state.isRunning = false;
+    clearInterval(intervalId);
+
+    document.querySelector('.timer').style.display = 'none';
+    document.querySelector('main').style.display = 'none';
+
+    resultScore.style.display = 'block';
+    resultScore.textContent = `Score: ${state.score}`;
+
+    playBtn.style.display = 'block';
+    playBtn.textContent = 'Play Again';
 }
+
+
+playBtn.addEventListener('click', () => {
+    // Reset state
+    state.score = 0;
+    state.time = 30;
+    state.isRunning = true;
+
+    score.textContent = state.score;
+    timer.textContent = `${state.time} sec`;
+
+    // Reset UI
+    document.querySelector('.timer').style.display = 'flex';
+    document.querySelector('main').style.display = 'flex';
+    resultScore.style.display = 'none';
+    playBtn.style.display = 'none';
+
+    startRound();
+
+    
+    intervalId = setInterval(() => {
+        if (!state.isRunning) return;
+
+        state.time--;
+        timer.textContent = `${state.time} sec`;
+
+        if (state.time === 0) {
+            endGame();
+        }
+    }, 1000);
+});
+
 
 startRound();
-
-let click_event = document.querySelector('.container');
-click_event.addEventListener('click', count);
-
-function count(e) {
-    if (e.target.tagName === 'BUTTON') {
-        if (e.target.style.backgroundColor === tar.style.backgroundColor) {
-            value = value + 10;
-            score.textContent = `${value}`;
-        }
-        
-        startRound(); 
-    }
-}
-
-let time_count=30;
-let timer=document.querySelector('.timer_count');
-timer.textContent=`${time_count} sec`;
-
-
-
-let id=setInterval(timer_logic,1000);
-
-function stop_show()
-{
-    
-    document.querySelector('.timer').style.display='none';
-    document.querySelector('main').style.display='none';
-    let result=document.querySelector('.result_score');
-    result.style.display='block';
-    result.textContent=value;
-
-    let playbtn=document.querySelector('.play');
-    playbtn.style.display='block';
-    playbtn.textContent='Play Again';
-   
-    
-}
-
-
-function timer_logic()
-{
-    
-    time_count--;
-   timer.textContent=`${time_count} sec`;
-    if(time_count===0)
-    {
-        clearInterval(id);
-        stop_show();
-    }
-  
-
-}
-let playbtn=document.querySelector('.play');
-playbtn.addEventListener('click',() => {
-    location.reload();
-});
